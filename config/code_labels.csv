@@ -1,0 +1,180 @@
+code,type,label
+dx:B34.9,diagnosis,"Viral infection, unspecified"
+dx:D64.9,diagnosis,"Anemia, unspecified"
+dx:E11.9,diagnosis,Type 2 diabetes mellitus without complications
+dx:E66.9,diagnosis,"Obesity, unspecified"
+dx:E78.5,diagnosis,"Hyperlipidemia, unspecified"
+dx:E87.1,diagnosis,Hypo-osmolality and hyponatremia
+dx:E87.5,diagnosis,Hyperkalemia
+dx:F41.9,diagnosis,"Anxiety disorder, unspecified"
+dx:G43.9,diagnosis,"Migraine, unspecified"
+dx:I10,diagnosis,Essential (primary) hypertension
+dx:I25.10,diagnosis,Chronic ischemic heart disease
+dx:I50.9,diagnosis,"Heart failure, unspecified"
+dx:J18.9,diagnosis,"Pneumonia, unspecified organism"
+dx:J44.9,diagnosis,Chronic obstructive pulmonary disease
+dx:K21.9,diagnosis,Gastro-esophageal reflux disease
+dx:K35.80,diagnosis,Acute appendicitis
+dx:K80.2,diagnosis,Calculus of gallbladder without cholecystitis
+dx:M54.5,diagnosis,Low back pain
+dx:N20.0,diagnosis,Calculus of kidney
+dx:N39.0,diagnosis,"Urinary tract infection, site not specified"
+dx:O20.0,diagnosis,Threatened abortion
+dx:O80,diagnosis,Encounter for full-term uncomplicated delivery
+dx:R06.0,diagnosis,Dyspnea
+dx:R07.9,diagnosis,"Chest pain, unspecified"
+dx:R10.9,diagnosis,"Abdominal pain, unspecified"
+dx:R11,diagnosis,Nausea and vomiting
+dx:R26.81,diagnosis,Unsteadiness on feet
+dx:R50.9,diagnosis,"Fever, unspecified"
+dx:R53.1,diagnosis,Weakness
+dx:R73.9,diagnosis,"Hyperglycemia, unspecified"
+dx:R74.0,diagnosis,Elevation of levels of liver transaminase and lactic acid de
+dx:R91.8,diagnosis,Other nonspecific abnormal finding of lung field
+dx:S22.3,diagnosis,Fracture of rib
+dx:Z00.0,diagnosis,General medical examination
+dx:Z34.9,diagnosis,"Encounter for supervision of normal pregnancy, unspecified"
+dx:Z71.1,diagnosis,Person with feared health complaint in whom no diagnosis is
+dx:Z74.1,diagnosis,Need for assistance with personal care
+dx:Z79.4,diagnosis,Long term use of insulin
+dx:Z86.79,diagnosis,Personal history of other diseases of the circulatory system
+dx:Z87.01,diagnosis,Personal history of pneumonia
+dx:Z91.81,diagnosis,History of falling
+px:FI0000,procedure,General practice consultation
+px:FI0001,procedure,Internal medicine consultation
+px:FI0002,procedure,Cardiology consultation
+px:FI0003,procedure,Orthopedics consultation
+px:FI0004,procedure,Pediatrics consultation
+px:FI0005,procedure,Dermatology consultation
+px:FI0006,procedure,Neurology consultation
+px:FI0007,procedure,Follow-up consultation
+px:FI0008,procedure,Multidisciplinary consultation
+px:FI0009,procedure,Preoperative consultation
+px:FI0010,procedure,Postoperative consultation
+px:FI0011,procedure,Emergency consultation
+px:FI0012,procedure,Chest X-ray
+px:FI0013,procedure,Abdominal X-ray
+px:FI0014,procedure,Bone X-ray
+px:FI0015,procedure,Abdominal ultrasound
+px:FI0016,procedure,Pelvic ultrasound
+px:FI0017,procedure,Echocardiogram
+px:FI0018,procedure,CT scan
+px:FI0019,procedure,MRI exam
+px:FI0020,procedure,Mammography
+px:FI0021,procedure,Doppler ultrasound
+px:FI0022,procedure,Endoscopy exam
+px:FI0023,procedure,Colonoscopy exam
+px:FI0024,procedure,Angiography exam
+px:FI0025,procedure,Complete blood count
+px:FI0026,procedure,Blood glucose test
+px:FI0027,procedure,Liver function panel
+px:FI0028,procedure,Renal function panel
+px:FI0029,procedure,Lipid profile
+px:FI0030,procedure,Thyroid hormone panel
+px:FI0031,procedure,Coagulation test
+px:FI0032,procedure,C-reactive protein test
+px:FI0033,procedure,Urinalysis
+px:FI0034,procedure,Blood culture
+px:FI0035,procedure,Electrolyte panel
+px:FI0036,procedure,Hemoglobin A1c test
+px:FI0037,procedure,Pregnancy test
+px:FI0038,procedure,Minor surgery act
+px:FI0039,procedure,Medium complexity surgery act
+px:FI0040,procedure,Major surgery act
+px:FI0041,procedure,Surgical assistant act
+px:FI0042,procedure,Anesthesia act
+px:FI0043,procedure,Laparoscopic surgery act
+px:FI0044,procedure,Arthroscopic surgery act
+px:FI0045,procedure,Ophthalmic surgery act
+px:FI0046,procedure,ENT surgery act
+px:FI0047,procedure,Gynecologic surgery act
+px:FI0048,procedure,Urologic surgery act
+px:FI0049,procedure,Cardiothoracic surgery act
+px:FI0050,procedure,Neurosurgery act
+px:FI0051,procedure,Operating room support fee
+px:FI0052,procedure,Recovery room support fee
+px:FI0053,procedure,Surgical consumables support fee
+px:FI0054,procedure,Post-anesthesia recovery monitoring
+px:FI0055,procedure,Standard inpatient day
+px:FI0056,procedure,Intermediate care inpatient day
+px:FI0057,procedure,Intensive care inpatient day
+px:FI0058,procedure,Extended stay inpatient day
+px:FI0059,procedure,Isolation inpatient day
+px:FI0060,procedure,Neonatal inpatient day
+px:FI0061,procedure,Pediatric inpatient day
+px:FI0062,procedure,Surgical ward inpatient day
+px:FI0063,procedure,Medical ward inpatient day
+px:FI0064,procedure,Coronary care inpatient day
+px:FI0065,procedure,High dependency inpatient day
+px:FI0066,procedure,Rehabilitation inpatient day
+px:FI0067,procedure,Day of discharge stay
+px:FI0068,procedure,Day of admission stay
+px:FI0069,procedure,Step-down unit inpatient day
+px:FI0085,procedure,Syringe
+px:FI0086,procedure,Needle
+px:FI0087,procedure,Surgical gloves
+px:FI0088,procedure,Sterile drape
+px:FI0089,procedure,Catheter
+px:FI0090,procedure,Dressing kit
+px:FI0091,procedure,IV infusion set
+px:FI0092,procedure,Surgical suture kit
+px:FI0093,procedure,Ostomy bag
+px:FI0094,procedure,Oxygen mask
+px:FI0095,procedure,Nasogastric tube
+px:FI0096,procedure,Urinary collection bag
+px:FI0097,procedure,Compression bandage
+px:FI0098,procedure,Disposable gown
+px:FI0099,procedure,Procedure tray
+px:FI0100,procedure,Hip joint prosthesis
+px:FI0101,procedure,Knee joint prosthesis
+px:FI0102,procedure,Cesarean section act
+px:FI0103,procedure,Cataract surgery act
+px:FI0104,procedure,Orthopedic bone cement
+px:FI0105,procedure,Hip arthroplasty surgical drape set
+px:FI0106,procedure,Knee arthroplasty surgical drape set
+px:FI0107,procedure,Laparoscopic trocar set
+px:FI0108,procedure,Endoscopic clip applier cartridge
+px:FI0109,procedure,Insufflation tubing set
+px:FI0110,procedure,Specimen retrieval bag
+px:FI0111,procedure,Obstetric delivery instrument set
+px:FI0112,procedure,Cesarean surgical drape set
+px:FI0113,procedure,Intraocular lens (IOL)
+px:FI0114,procedure,Phacoemulsification tip
+px:FI0115,procedure,Ophthalmic viscoelastic device
+px:FI0116,procedure,Anatomia Patologica histopathology examination
+px:FI0117,procedure,Biomicroscopia (slit-lamp examination)
+px:FI0118,procedure,HIV-1 antibody
+px:FI0119,procedure,HIV-2 antibody
+px:FI0120,procedure,"HIV-1 and HIV-2 antibodies, single result"
+px:FI0121,procedure,Alanine aminotransferase (ALT)
+px:FI0122,procedure,Aspartate aminotransferase (AST)
+px:FI0123,procedure,Alkaline phosphatase
+px:FI0124,procedure,Total bilirubin
+px:FI0125,procedure,Albumin
+px:FI0126,procedure,Urea (BUN)
+px:FI0127,procedure,Creatinine
+px:FI0128,procedure,Estimated glomerular filtration rate
+px:FI0129,procedure,Total cholesterol
+px:FI0130,procedure,HDL cholesterol
+px:FI0131,procedure,LDL cholesterol
+px:FI0132,procedure,Triglycerides
+px:FI0133,procedure,Sodium
+px:FI0134,procedure,Potassium
+px:FI0135,procedure,Chloride
+px:FI0136,procedure,Bicarbonate (CO2)
+px:FI9000,procedure,Patient copayment (TR)
+rx:FI0070,medication,Oral antibiotic
+rx:FI0071,medication,Intravenous antibiotic
+rx:FI0072,medication,Analgesic medication
+rx:FI0073,medication,Anti-inflammatory medication
+rx:FI0074,medication,Anticoagulant medication
+rx:FI0075,medication,Sedative medication
+rx:FI0076,medication,Contrast drug
+rx:FI0077,medication,Chemotherapy drug
+rx:FI0078,medication,Biologic drug
+rx:FI0079,medication,Antihypertensive medication
+rx:FI0080,medication,Insulin therapy drug
+rx:FI0081,medication,Vaccination drug
+rx:FI0082,medication,Antiemetic medication
+rx:FI0083,medication,Bronchodilator medication
+rx:FI0084,medication,Antiviral medication

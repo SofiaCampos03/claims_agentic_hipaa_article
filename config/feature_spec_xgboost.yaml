@@ -1,0 +1,355 @@
+# Feature spec for the claim-denial XGBoost model (claims_agentic_framework.ipynb).
+#   numerical.active   -> continuous model features (skewed ones Box-Cox'd, all standardised)
+#   numerical.inactive -> available columns deliberately NOT used (leakage / redundancy)
+#   categorical        -> one-hot encoded; levels are learned from the training data
+#   binned             -> fixed-edge bins, one-hot encoded
+#   binary             -> 0/1 flags derived from the raw columns
+#   bureaucracy_time_days is used as a continuous feature (no binning).
+numerical:
+  active:
+    - patient_claim_count
+    - patient_avg_claim_total
+    - insurer_avg_claim_total
+    - claim_total
+    - bureaucracy_time_days
+    #- processing_time_days
+
+  inactive:
+    - processing_time_days
+    - number_of_procedures
+    - number_of_medication
+    - diagnosis_vitals_ratio
+    - medication_diagnosis_ratio
+    - procedures_per_diagnosis
+    - similar_denial_ratio
+    - diagnosis_count
+    - claim_total_vs_insurer_avg_ratio
+    - vitals_count
+    - claim_total_per_diagnosis
+    # Moved to inactive to prevent data leakage
+    - patient_rejection_ratio
+    - patient_rejection_ratio_30d
+    - patient_rejection_ratio_60d
+    - patient_rejection_ratio_90d
+    - patient_rejection_ratio_120d
+    # Short-term insurer rejection rates causing model dominance and potential data leakage
+    - insurer_rejection_rate
+    - insurer_rejection_rate_30d
+    - insurer_rejection_rate_60d
+    - insurer_rejection_rate_90d
+    - insurer_rejection_rate_120d
+  derived:
+    multi_hot:
+      diagnosis:
+        column: diagnosis_codes
+        prefix: diagnosis_codes
+        max_codes: 50
+        min_df: 10
+      medication:
+        column: medication_codes
+        prefix: medication_code
+        max_codes: 50
+        min_df: 10
+      procedure:
+        column: procedure_codes
+        prefix: procedure_code
+        max_codes: 50
+        min_df: 10
+  feature_groups:
+    rejection_rate_features:
+      - patient_rejection_ratio_120d
+      #- insurer_rejection_rate_90d
+      #- insurer_rejection_rate_120d
+      #- insurer_complaint_rejection_rate_120d
+      #- insurer_gender_complaint_rejection_rate_120d
+      #- insurer_age_complaint_rejection_rate_120d
+    boxcox_features:
+      - number_of_procedures
+      - patient_avg_claim_total
+      - insurer_avg_claim_total
+    decimal_columns:
+      - claim_total
+      - patient_avg_claim_total
+      - insurer_avg_claim_total
+      - patient_rejection_ratio_120d
+      #- insurer_rejection_rate_90d
+      #- insurer_rejection_rate_120d
+      - insurer_complaint_rejection_rate_120d
+      #- insurer_gender_complaint_rejection_rate_120d
+      #- insurer_age_complaint_rejection_rate_120d
+
+categorical:
+  gender:
+    - F
+    - M
+  has_pre_auth:
+    - yes
+    - no
+  was_pre_auth_approved:
+    - yes
+    - no
+  claim_month:
+    - january
+    - february
+    - march
+    - april
+    - may
+    - june
+    - july
+    - august
+    - september
+    - october
+    - november
+    - december
+  claim_subtype:
+    - inpatient
+    - outpatient
+  claim_type:
+    - institutional
+    - professional
+    - oral
+    - vision
+    - pharmacy
+  
+  claim_day_of_week:
+    - monday
+    - tuesday
+    - wednesday
+    - thursday
+    - friday
+    - saturday
+    - sunday
+  age_range:
+    - "0-5"
+    - "6-9"
+    - "10-19"
+    - "20-29"
+    - "30-39"
+    - "40-49"
+    - "50-64"
+    - "65+"
+  insurer_name: []   # levels learned from data/claim_metrics.csv
+
+binned:
+  claim_total_per_diagnosis_bin:
+    source_column: claim_total_per_diagnosis
+    labels:
+      - very_low
+      - low
+      - medium
+      - high
+      - very_high
+    default_bins:
+      - 0
+      - 32
+      - 72
+      - 185
+      - 428
+      - inf
+
+  patient_rejection_ratio_120d_bin:
+    source_column: patient_rejection_ratio_120d
+    labels:
+      - very_low
+      - low
+      - medium
+      - high
+      - very_high
+    default_bins:
+      - 0
+      - 0.2
+      - 0.4
+      - 0.6
+      - 0.8
+      - 1.0
+  # insurer_rejection_rate_90d_bin:
+  #   source_column: insurer_rejection_rate_90d
+  #   labels:
+  #     - very_low
+  #     - low
+  #     - medium
+  #     - high
+  #     - very_high
+  #   default_bins:
+  #     - 0
+  #     - 0.2
+  #     - 0.4
+  #     - 0.6
+  #     - 0.8
+  #     - 1.0
+  # insurer_rejection_rate_120d_bin:
+  #   source_column: insurer_rejection_rate_120d
+  #   labels:
+  #     - very_low
+  #     - low
+  #     - medium
+  #     - high
+  #     - very_high
+  #   default_bins:
+  #     - 0
+  #     - 0.2
+  #     - 0.4
+  #     - 0.6
+  #     - 0.8
+  #     - 1.0
+  # insurer_complaint_rejection_rate_120d_bin:
+  #   source_column: insurer_complaint_rejection_rate_120d
+  #   labels:
+  #     - very_low
+  #     - low
+  #     - medium
+  #     - high
+  #     - very_high
+  #   default_bins:
+  #     - 0
+  #     - 0.2
+  #     - 0.4
+  #     - 0.6
+  #     - 0.8
+  #     - 1.0
+binary:
+  - no_pre_auth_flag
+  - pre_auth_denied_flag
+  - patient_high_denial_120d
+
+text_columns:
+  - diagnosis_codes
+  - medication_codes
+  - procedure_codes
+
+# Preprocessing pipeline (XGBoost path)
+pipeline:
+  # 1. Decimal/money columns -> float64 (claim_total also stripped of $ , symbols)
+  - op: clean_decimal
+    columns: numerical.feature_groups.decimal_columns
+    strip_non_numeric: [claim_total]
+    fillna: 0.0
+
+  # 2. Matched/unmatched medication-diagnosis indicator from its count column
+  - op: indicator_from_count
+    count_column: unmatched_medication_diagnosis_count
+    positive_target: unmatched_medication_diagnosis
+    complement_target: matched_medication_diagnosis
+    default_positive: 0
+    default_complement: 1
+
+  # 3. claim_month integer -> month name (unmapped -> "missing")
+  - op: map_values
+    column: claim_month
+    fillna: missing
+    mapping:
+      1: january
+      2: february
+      3: march
+      4: april
+      5: may
+      6: june
+      7: july
+      8: august
+      9: september
+      10: october
+      11: november
+      12: december
+
+  # 4. claim_day_of_week integer -> weekday name (unmapped -> "missing")
+  - op: map_values
+    column: claim_day_of_week
+    numeric_coerce: true
+    fillna: missing
+    mapping:
+      0: sunday
+      1: monday
+      2: tuesday
+      3: wednesday
+      4: thursday
+      5: friday
+      6: saturday
+
+  # 5-6. Interval columns -> days
+  - op: timedelta_to_unit
+    source: bureaucracy_time
+    target: bureaucracy_time_days
+    unit: days
+    write_back_source: true
+    fillna: 0.0
+  - op: timedelta_to_unit
+    source: processing_time
+    target: processing_time_days
+    unit: days
+    write_back_source: true
+    fillna: 0.0
+
+  # 7. diagnosis_vitals_ratio: IQR clip, force 0 when vitals_count == 0
+  - op: clip_iqr
+    column: diagnosis_vitals_ratio
+    iqr_multiplier: 1.5
+    zero_when_zero: vitals_count
+    fillna: 0.0
+
+  # 8. claim_total final strip + numeric coercion
+  - op: clean_decimal
+    columns: [claim_total]
+    strip_non_numeric: [claim_total]
+    fillna: 0.0
+
+  # 9. Box-Cox (+ IQR clip) on skewed numerics — fitted on training data only
+  - op: boxcox_clip
+    columns: numerical.feature_groups.boxcox_features
+    iqr_multiplier: 1.5
+    skew_threshold: 0.75
+    eps: 1.0e-6
+
+  # 10. claim_total -> percentile bin (quartile edges)
+  - op: percentile_bin
+    column: claim_total
+    bin: claim_total_bin
+    use_quartiles: true
+
+  # 11. insurer_claim_volume -> percentile bin (quartile edges)
+  - op: percentile_bin
+    column: insurer_claim_volume
+    bin: insurer_claim_volume_bin
+    use_quartiles: true
+
+  # 12. claim_total_per_diagnosis = claim_total / diagnosis_count, then bin
+  - op: ratio
+    numerator: claim_total
+    denominator: diagnosis_count
+    target: claim_total_per_diagnosis
+    on_zero_denominator: one
+  - op: percentile_bin
+    column: claim_total_per_diagnosis
+    bin: claim_total_per_diagnosis_bin
+
+  # 13. Percentile-bin each rejection-rate feature that has a matching *_bin entry
+  - op: percentile_bin_group
+    columns: numerical.feature_groups.rejection_rate_features
+    bin_suffix: _bin
+
+  # 14. processing_time_days -> percentile bin
+  - op: percentile_bin
+    column: processing_time_days
+    bin: processing_time_days_bin
+
+  # 15. Multi-hot encode the code-array columns (numerical.derived.multi_hot)
+  - op: multi_hot
+
+  # 16. Coerce active numericals -> float, fill NaN with 0
+  - op: coerce_numeric
+    columns: numerical.active
+    fillna: 0.0
+
+  # 17. procedures_per_diagnosis = number_of_procedures / diagnosis_count (only if absent)
+  - op: ratio
+    numerator: number_of_procedures
+    denominator: diagnosis_count
+    target: procedures_per_diagnosis
+    on_zero_denominator: one
+    coerce_numerator: true
+    numerator_fillna: 0.0
+    astype_float: true
+    skip_if_present: true
+
+  # 18. Coerce binary flags -> int (0/1), creating any missing as 0
+  - op: coerce_binary
+    columns: binary
