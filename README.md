@@ -88,6 +88,13 @@ jupyter lab                    # or open the notebook in VS Code
 Section 1, and its values take precedence over variables set in the shell.
 
 1. Put the claims extract at `data/claim_metrics.csv`. Its columns are described in [`data/README.md`](data/README.md).
+   The repository ships it compressed as `data/claim_metrics.csv.zip` (~130 MB once unzipped), so decompress it
+   before running the notebook:
+
+   ```bash
+   unzip data/claim_metrics.csv.zip -d data -x "__MACOSX/*"                         # macOS / Linux
+   Expand-Archive data\claim_metrics.csv.zip -DestinationPath data                  # Windows (PowerShell)
+   ```
 2. Put the policy documents (PDF or Markdown) in `docs/`. See [`docs/README.md`](docs/README.md).
 3. Run the notebook top to bottom.
 
