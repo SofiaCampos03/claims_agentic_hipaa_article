@@ -51,8 +51,34 @@ Generated at run time and git-ignored: `artifacts/` (model, cached analytics and
 
 ## Setup
 
+XGBoost needs the OpenMP runtime, which pip does not install. Install it once for your OS before the Python
+packages, otherwise `import xgboost` fails with a missing `libomp` / `libgomp` / `vcomp140.dll` error.
+
+**macOS** (Homebrew):
+
 ```bash
-python -m venv .venv && source .venv/bin/activate
+brew install libomp
+```
+
+**Linux**:
+
+```bash
+sudo apt-get install -y libgomp1      # Debian / Ubuntu
+sudo dnf install -y libgomp           # Fedora / RHEL / CentOS
+sudo pacman -S gcc-libs               # Arch
+```
+
+**Windows**: OpenMP (`vcomp140.dll`) ships with the Microsoft Visual C++ Redistributable. Install it from
+<https://aka.ms/vs/17/release/vc_redist.x64.exe>, or from PowerShell:
+
+```powershell
+winget install Microsoft.VCRedist.2015+.x64
+```
+
+Then create the environment and install the packages:
+
+```bash
+python -m venv .venv && source .venv/bin/activate   # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 cp .env.example .env           # then set GROQ_API_KEY in .env (https://console.groq.com)
 jupyter lab                    # or open the notebook in VS Code
